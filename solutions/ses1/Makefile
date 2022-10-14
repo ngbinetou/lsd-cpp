@@ -18,6 +18,15 @@ tp1Exo3.o :
 
 tp1Exo4.o :
 	gcc -c sources/tp1Exo4.c  -I includes
+	
+	
+clean:
+	rm -rf *.o
+
+fclean: clean
+	rm $(NAME)
+	
+re: fclean all
 
 
 

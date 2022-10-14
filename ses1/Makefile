@@ -15,3 +15,4 @@ clean:
 
 fclean: clean
 	rm $(NAME)
+	
