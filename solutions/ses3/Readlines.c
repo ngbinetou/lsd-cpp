@@ -192,7 +192,6 @@ int main()
 	
 	int fd = open("/home/cecile/Documents/LSD2/test",664);
 	char* buf= malloc(SIZE_BUFF*(sizeof(char)));
-	//static int r;
 	int r=read(fd, buf, SIZE_BUFF);
 
 	While(r!=0)
