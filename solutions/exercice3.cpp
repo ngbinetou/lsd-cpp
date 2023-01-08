@@ -1,97 +1,66 @@
-
-#include <iostream>
 using namespace std;
+#include <iostream>
+#include<vector>
 
-struct noeudd
+
+
+template <typename T>
+
+
+
+
+//fonction qui multiplie deux matrices qui sera utiliser dans matpow
+vector<vector<T>> mult(vector<vector<T>> x, vector<vector<T>> y)
 {
-   int valeur;
-   struct noeudd* suivant;
-};
-
-typedef struct noeudd noeud;
-
-
-
-//la fonction qui calcule la longueur
-int len(noeud* L)
-{   
-
-    int nb=0;
-    noeud* temp=L;
-    while(temp != NULL)
-    {
-        nb++;
-        temp=temp->suivant;
-    }
-
-    return nb;
-}
-
-
-
-//La Fonction print
-void print(noeud* L)
-{
-	while(L->suivant != NULL)
+	vector<vector<T>> z;
+	
+	for (int i=0; i<x.size(); i++)
 	{
-		cout<< L->valeur <<endl;
-		L=L->suivant;
-	}
-	cout<< L->valeur <<endl;
-	return;
-}
-
-
-
-//la fonction qui ajoute
-void push(int i, noeud** tete) 
-{
-
-   noeud* nnoeud {new noeud};
-
-
-	if(*tete==NULL)
-	{
-		nnoeud->valeur = i;
-   		nnoeud->suivant = NULL;
-   		*tete = nnoeud;
-
-	}
-
-	else
-	{
-		nnoeud->valeur = i;
-		nnoeud->suivant=NULL;
-		noeud* temp;
-		temp=*tete;
-		while(temp->suivant != NULL)
+		for (int j=0; j< y[i].size(); j++)
 		{
-			
-			temp=temp->suivant;
+			for (int k=0; k<3; k++)
+				z [i][j] += x[i][k] * y[k][j];
 		}
-
-  		temp->suivant=nnoeud;
-
 	}
-
- 
-  return;
+	return z;
+	
 }
- 
 
 
-//la fonction recherche
-int recherche ( noeud* NewL, int j) 
+
+template <typename T>
+
+
+// La fonction matpow, pour les matrices carres
+vector<vector<T>> matpow(vector<vector<T>> vec, int y)
 {
-   
-   	noeud* temp=NewL;
-	while(temp != NULL)
+
+	if (y==0)
+        return vector<vector<T>> (0);
+
+    else if (y%2==0)
+        return mult(matpow(vec, y/2),matpow(vec, y/2));
+
+    else 
+        return mult(mult(matpow(vec, (y-1)/2),matpow(vec, (y-1)/2)),vec);
+
+}
+
+
+
+
+template <typename T>
+
+//La fonction matprint pour afficher
+ void matprint(vector<vector<T>> vec)
+{
+	for (int i=0; i<vec.size(); i++)
 	{
-		if (temp->valeur==j)
-			return 1;
-		else 
-			return 0;
+		for (int j=0; j < vec[i].size(); j++)
+			cout<< vec[i][j]<< " ";
+		cout <<endl;
 	}
+
 }
 
 
@@ -99,49 +68,76 @@ int recherche ( noeud* NewL, int j)
 
 
 
-// creation de la liste sans elements dupliques.
-noeud* copie(noeud** L, noeud** NewL)
+template <typename T>
+
+//La foncion matpownaive, pour les matrices carres mais avec une plus grande complexite
+vector<vector<T>> matpownaive(vector<vector<T>> x, int k)
 {
-    int j;
-    noeud* temp= *L;
-
-    
-    while(temp!=NULL)
-    {
-        int j= temp->valeur;
-        int k= recherche(*NewL,j);
-        if (k==1);
-        	push(j,NewL);
-        temp=temp->suivant;
-    }
-        
-    temp= temp->suivant;
-    
-
-    
-    return *NewL;
+	vector<vector<T>> z;
+	
+	int m =0;
+	while (m,k)
+	{
+		for (int i=0; i<x.size(); i++)
+		{
+			for (int j=0; j< x[i].size(); j++)
+			{
+				for (int l=0; l<3; l++)
+					z [i][j] += x[i][k] * x[k][j];
+			}
+		}
+		z=x;	
+	}
+	return z;
+	
 }
+
+
+
 
 
 
 int main()
 {
-	noeud *L=NULL;
-	noeud *NewL=NULL;
+	vector <vector<int>> v1{{1,2},{3,4}};
+	
+	
+	
+	// print la matrice v1
+	matprint(v1);
+	
+	
+	//Faire le mat**k avec k=2
+	vector<vector<int>> mat =matpow(v1,2);
+	
+	//print resultat de matpow
+	matprint(mat);
+	
 
-	push(1,&L);
-	push(2,&L);
-	push(3,&L);
-	push(3,&L);
-	push(4,&L);
-	push(5,&L);
-	push(6,&L);
-	push(7,&L);
-	push(8,&L);
 
-	copie(&L, &NewL);
-	print(NewL);
-
+	//Faire matpownaive(v1,2);
+	vector<vector<int>> mattt =matpownaive(v1,2);
+	
+	
+	//print resultat de matpownaive
+	matprint(mattt);
 
 	return 0;
 }
+
+//POUR DE TRES GRANDES VALEURS DE K, MATPOW EST LARGEMENT PLUS EFFICACE QUE MATPOW NAIVE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
